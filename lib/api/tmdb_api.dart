@@ -3,6 +3,7 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:infinit_frontend_assessment/models/models.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TMDBAPI {
@@ -38,5 +39,21 @@ class TMDBAPI {
       headers: _headers,
     ))
       ..interceptors.add(DioCacheInterceptor(options: options));
+  }
+
+  /// Retrieves a batch of top rated movies listed by the API
+  static Future<TopRatedResponse> fetchTopRatedMovies({required int page}) async {
+    String url = '$_baseUrl/top_rated?language=en-US&page=$page';
+
+    final response = await _dio.get(url);
+
+    final dynamic rawData = response.data;
+    if (response.statusCode == 200 || response.statusCode == 304) {
+      // 200 OK or 304 Not Modified
+      return TopRatedResponse.fromJson(rawData);
+    } else {
+      final dynamic message = rawData["message"];
+      throw Exception(message);
+    }
   }
 }
