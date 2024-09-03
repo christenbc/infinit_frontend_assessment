@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:infinit_frontend_assessment/api/tmdb_api.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await TMDBAPI.init();
   runApp(const MyApp());
 }
 
