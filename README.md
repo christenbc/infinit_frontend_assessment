@@ -12,3 +12,5 @@ As listing the API calls is a recurrent routine, it is a good practice to cache 
 The app fetches a top list of movies coming from The Movie Data Base (TMDB) API.
 
 The models are implemented by using [equatable](https://pub.dev/packages/equatable) to simplify objects comparison and [json_serializable](https://pub.dev/packages/json_serializable) to automate JSON serializing and deserializing.
+
+The state management is implemented by using [bloc](flutter_bloc), that is Business Logic of Component, a way to architect the app so the UI is separated from the logic and repositories.
