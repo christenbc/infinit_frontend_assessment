@@ -32,6 +32,10 @@ class Movie extends Equatable {
     required this.vote_count,
   });
 
+  // https://developer.themoviedb.org/docs/image-basics
+  String get backdropImageThumb => 'https://image.tmdb.org/t/p/w500/$backdrop_path';
+  String get posterImageThumb => 'https://image.tmdb.org/t/p/w500/$poster_path';
+
   /// Connect the generated [_$MovieFromJson] function to the `fromJson`
   /// factory.
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);

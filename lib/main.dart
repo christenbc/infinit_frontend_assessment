@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinit_frontend_assessment/api/tmdb_api.dart';
+import 'package:infinit_frontend_assessment/blocs/blocs.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,12 +15,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Infinit Frontend Assessment',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BlocProvider<MoviesCubit>(
+        create: (context) => MoviesCubit(),
+        child: const MyHomePage(title: 'Top Rated Movies'),
+      ),
     );
   }
 }
@@ -33,6 +38,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    context.read<MoviesCubit>().onFetchTopMovies(pageKey: 1);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -63,7 +74,29 @@ class ListViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return BlocConsumer<MoviesCubit, MoviesState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) => ListView.separated(
+        itemCount: state.topMovies.length,
+        itemBuilder: (context, index) {
+          final topMovie = state.topMovies[index];
+          return ListTile(
+            leading: AspectRatio(
+              aspectRatio: 1,
+              child: Image.network(
+                topMovie.posterImageThumb,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(topMovie.title),
+            trailing: Text('⭐ ${topMovie.vote_average.toString()}'),
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+      ),
+    );
   }
 }
 
