@@ -29,6 +29,27 @@ class MoviesState extends Equatable {
     this.failure = const Failure(),
   });
 
+  Map<int, int> get getGenresCount {
+    final genreCount = <int, int>{};
+
+    for (final movie in topMovies) {
+      for (final genreId in movie.genre_ids) {
+        if (genreCount.containsKey(genreId)) {
+          genreCount[genreId] = genreCount[genreId]! + 1;
+        } else {
+          genreCount[genreId] = 1;
+        }
+      }
+    }
+
+    return genreCount;
+  }
+
+  List<MapEntry<int, int>> get sortedGenres =>
+      getGenresCount.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
+  List<MapEntry<int, int>> get top3Genres => sortedGenres.take(3).toList();
+
   @override
   List<Object> get props => [
         topMovies,
