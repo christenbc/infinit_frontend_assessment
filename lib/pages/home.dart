@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    context.read<MoviesCubit>().onFetchTopMovies(pageKey: 1);
+    context.read<MoviesCubit>().onStartup();
     super.initState();
   }
 
