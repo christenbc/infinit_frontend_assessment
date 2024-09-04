@@ -12,7 +12,7 @@ class TopRatedListView extends StatefulWidget {
   State<TopRatedListView> createState() => _TopRatedListViewState();
 }
 
-class _TopRatedListViewState extends State<TopRatedListView> {
+class _TopRatedListViewState extends State<TopRatedListView> with AutomaticKeepAliveClientMixin {
   final PagingController<int, Movie> _pagingController = PagingController(firstPageKey: 1);
 
   @override
@@ -28,47 +28,53 @@ class _TopRatedListViewState extends State<TopRatedListView> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocConsumer<MoviesCubit, MoviesState>(
-        listener: (context, state) {
-          if (state.status == MoviesStatus.loaded) {
-            final isLastPage = state.hasReachedMax;
-            if (isLastPage) {
-              _pagingController.appendLastPage(state.pagedTopMovies);
-            } else {
-              final nextPageKey = (_pagingController.nextPageKey ?? _pagingController.firstPageKey) + 1;
-              _pagingController.appendPage(state.pagedTopMovies, nextPageKey);
-            }
-          } else if (state.status == MoviesStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.failure.message.toString()),
-                backgroundColor: Colors.red,
-              ),
-            );
+  Widget build(BuildContext context) {
+    super.build(context); // Required when using AutomaticKeepAliveClientMixin
+    return BlocConsumer<MoviesCubit, MoviesState>(
+      listener: (context, state) {
+        if (state.status == MoviesStatus.loaded) {
+          final isLastPage = state.hasReachedMax;
+          if (isLastPage) {
+            _pagingController.appendLastPage(state.pagedTopMovies);
+          } else {
+            final nextPageKey = (_pagingController.nextPageKey ?? _pagingController.firstPageKey) + 1;
+            _pagingController.appendPage(state.pagedTopMovies, nextPageKey);
           }
-        },
-        builder: (context, state) => PagedListView.separated(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Movie>(
-            itemBuilder: (context, topMovie, index) => ListTile(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DetailedPage(movieIndex: index)),
-              ),
-              leading: AspectRatio(
-                aspectRatio: 1,
-                child: Image.network(
-                  topMovie.posterImageThumb,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(topMovie.title),
-              trailing: Text('⭐ ${topMovie.vote_average.toString()}'),
+        } else if (state.status == MoviesStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.failure.message.toString()),
+              backgroundColor: Colors.red,
             ),
-            firstPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
-            // newPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
+          );
+        }
+      },
+      builder: (context, state) => PagedListView.separated(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Movie>(
+          itemBuilder: (context, topMovie, index) => ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DetailedPage(movieIndex: index)),
+            ),
+            leading: AspectRatio(
+              aspectRatio: 1,
+              child: Image.network(
+                topMovie.posterImageThumb,
+                fit: BoxFit.cover,
+              ),
+            ),
+            title: Text(topMovie.title),
+            trailing: Text('⭐ ${topMovie.vote_average.toString()}'),
           ),
-          separatorBuilder: (context, index) => const SizedBox(height: 8),
+          firstPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
+          // newPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
         ),
-      );
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
