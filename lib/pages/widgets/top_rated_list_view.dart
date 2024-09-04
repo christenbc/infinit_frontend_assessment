@@ -1,15 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinit_frontend_assessment/blocs/blocs.dart';
+import 'package:infinit_frontend_assessment/models/models.dart';
 import 'package:infinit_frontend_assessment/pages/pages.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class TopRatedListView extends StatelessWidget {
+class TopRatedListView extends StatefulWidget {
   const TopRatedListView({super.key});
+
+  @override
+  State<TopRatedListView> createState() => _TopRatedListViewState();
+}
+
+class _TopRatedListViewState extends State<TopRatedListView> {
+  final PagingController<int, Movie> _pagingController = PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    _pagingController.addPageRequestListener((pageKey) => context.read<MoviesCubit>().onFetchTopMovies(page: pageKey));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pagingController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => BlocConsumer<MoviesCubit, MoviesState>(
         listener: (context, state) {
-          if (state.status == MoviesStatus.failure) {
+          if (state.status == MoviesStatus.loaded) {
+            final isLastPage = state.hasReachedMax;
+            if (isLastPage) {
+              _pagingController.appendLastPage(state.pagedTopMovies);
+            } else {
+              final nextPageKey = (_pagingController.nextPageKey ?? _pagingController.firstPageKey) + 1;
+              _pagingController.appendPage(state.pagedTopMovies, nextPageKey);
+            }
+          } else if (state.status == MoviesStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.failure.message.toString()),
@@ -18,11 +47,10 @@ class TopRatedListView extends StatelessWidget {
             );
           }
         },
-        builder: (context, state) => ListView.separated(
-          itemCount: state.topMovies.length,
-          itemBuilder: (context, index) {
-            final topMovie = state.topMovies[index];
-            return ListTile(
+        builder: (context, state) => PagedListView.separated(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<Movie>(
+            itemBuilder: (context, topMovie, index) => ListTile(
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => DetailedPage(movieIndex: index)),
@@ -36,8 +64,10 @@ class TopRatedListView extends StatelessWidget {
               ),
               title: Text(topMovie.title),
               trailing: Text('⭐ ${topMovie.vote_average.toString()}'),
-            );
-          },
+            ),
+            firstPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
+            // newPageErrorIndicatorBuilder: (context) => Text('Error: ${_pagingController.error}'),
+          ),
           separatorBuilder: (context, index) => const SizedBox(height: 8),
         ),
       );

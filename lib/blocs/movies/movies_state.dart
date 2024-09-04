@@ -14,6 +14,7 @@ enum MoviesStatus {
 
 class MoviesState extends Equatable {
   final List<Movie> topMovies;
+  final List<Movie> pagedTopMovies;
   final List<Language> languages;
   final List<Genre> genres;
   final bool hasReachedMax;
@@ -22,6 +23,7 @@ class MoviesState extends Equatable {
 
   const MoviesState({
     this.topMovies = const [],
+    this.pagedTopMovies = const [],
     this.languages = const [],
     this.genres = const [],
     this.hasReachedMax = false,
@@ -73,6 +75,7 @@ class MoviesState extends Equatable {
   @override
   List<Object> get props => [
         topMovies,
+        pagedTopMovies,
         languages,
         genres,
         hasReachedMax,
@@ -82,6 +85,7 @@ class MoviesState extends Equatable {
 
   MoviesState copyWith({
     List<Movie>? topMovies,
+    List<Movie>? pagedTopMovies,
     List<Language>? languages,
     List<Genre>? genres,
     bool? hasReachedMax,
@@ -90,6 +94,7 @@ class MoviesState extends Equatable {
   }) {
     return MoviesState(
       topMovies: topMovies ?? this.topMovies,
+      pagedTopMovies: pagedTopMovies ?? this.pagedTopMovies,
       languages: languages ?? this.languages,
       genres: genres ?? this.genres,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,

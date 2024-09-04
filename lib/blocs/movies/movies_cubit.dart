@@ -9,7 +9,6 @@ class MoviesCubit extends Cubit<MoviesState> {
   MoviesCubit() : super(const MoviesState());
 
   Future<void> onStartup() async {
-    onFetchTopMovies(pageKey: 1);
     onLoadLanguages();
     onLoadGenres();
   }
@@ -46,15 +45,17 @@ class MoviesCubit extends Cubit<MoviesState> {
     }
   }
 
-  Future<void> onFetchTopMovies({required int pageKey}) async {
+  Future<void> onFetchTopMovies({required int page}) async {
     emit(state.copyWith(status: MoviesStatus.loading));
 
     try {
-      final topRatedResponse = await TMDBAPI.fetchTopRatedMovies(page: pageKey);
-      final isLastPage = topRatedResponse.results.length < topRatedResponse.total_results;
+      final topRatedResponse = await TMDBAPI.fetchTopRatedMovies(page: page);
+      final isLastPage = topRatedResponse.results.length == topRatedResponse.total_results;
+      final updatedTopMovies = List<Movie>.from(state.topMovies)..addAll(topRatedResponse.results);
       emit(state.copyWith(
         status: MoviesStatus.loaded,
-        topMovies: topRatedResponse.results,
+        topMovies: updatedTopMovies,
+        pagedTopMovies: topRatedResponse.results,
         hasReachedMax: isLastPage,
       ));
     } catch (e) {
