@@ -18,7 +18,7 @@ class TopRatedListView extends StatelessWidget {
             return ListTile(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DetailedPage(movie: topMovie)),
+                MaterialPageRoute(builder: (context) => DetailedPage(movieIndex: index)),
               ),
               leading: AspectRatio(
                 aspectRatio: 1,

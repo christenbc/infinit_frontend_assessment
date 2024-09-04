@@ -15,15 +15,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Infinit Frontend Assessment',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: BlocProvider<MoviesCubit>(
-        create: (context) => MoviesCubit(),
-        child: const HomePage(title: 'Top Rated Movies'),
+    return BlocProvider<MoviesCubit>(
+      create: (context) => MoviesCubit(),
+      child: MaterialApp(
+        title: 'Infinit Frontend Assessment',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const HomePage(title: 'Top Rated Movies'),
       ),
     );
   }
