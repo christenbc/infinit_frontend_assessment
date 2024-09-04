@@ -130,10 +130,11 @@ class DetailedPage extends StatelessWidget {
       );
 
   String getGenreFromId(MoviesState state, int genreId) =>
-      state.genres.where((genre) => genre.id == genreId).firstOrNull?.name ?? '';
+      state.genres.where((genre) => genre.id == genreId).firstOrNull?.name ?? genreId.toString();
 
-  String? getLanguageFromLanguageCode(MoviesState state, Movie movie) =>
-      state.languages.where((language) => movie.original_language == language.iso_639_1).firstOrNull?.english_name;
+  String getLanguageFromLanguageCode(MoviesState state, Movie movie) =>
+      state.languages.where((language) => movie.original_language == language.iso_639_1).firstOrNull?.english_name ??
+      movie.original_language;
 
   EdgeInsets getInnerElementPadding() => const EdgeInsets.fromLTRB(pagePadding, 0, pagePadding, pagePadding);
 }
