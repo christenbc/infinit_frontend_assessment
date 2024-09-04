@@ -7,7 +7,7 @@ import 'package:infinit_frontend_assessment/models/models.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TMDBAPI {
-  static const String _baseUrl = 'https://api.themoviedb.org/3/movie';
+  static const String _baseUrl = 'https://api.themoviedb.org/3';
 
   static const _headers = {
     'Authorization':
@@ -43,7 +43,7 @@ class TMDBAPI {
 
   /// Retrieves a batch of top rated movies listed by the API
   static Future<TopRatedResponse> fetchTopRatedMovies({required int page}) async {
-    String url = '$_baseUrl/top_rated?language=en-US&page=$page';
+    String url = '$_baseUrl/movie/top_rated?language=en-US&page=$page';
 
     final response = await _dio.get(url);
 
@@ -51,6 +51,24 @@ class TMDBAPI {
     if (response.statusCode == 200 || response.statusCode == 304) {
       // 200 OK or 304 Not Modified
       return TopRatedResponse.fromJson(rawData);
+    } else {
+      final dynamic message = rawData["message"];
+      throw Exception(message);
+    }
+  }
+
+  /// Retrieves the list of languages used throughout TMDB
+  static Future<List<Language>> fetchLanguages() async {
+    String url = '$_baseUrl/configuration/languages';
+
+    final response = await _dio.get(url);
+
+    final dynamic rawData = response.data;
+    if (response.statusCode == 200 || response.statusCode == 304) {
+      // 200 OK or 304 Not Modified
+      final List<dynamic> data = rawData;
+      final languages = data.map((languageData) => Language.fromJson(languageData)).toList();
+      return languages;
     } else {
       final dynamic message = rawData["message"];
       throw Exception(message);
