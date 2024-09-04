@@ -9,19 +9,39 @@ class MoviesCubit extends Cubit<MoviesState> {
   MoviesCubit() : super(const MoviesState());
 
   Future<void> onStartup() async {
-    emit(state.copyWith(status: MoviesStatus.loading));
+    onFetchTopMovies(pageKey: 1);
+    onLoadLanguages();
+    onLoadGenres();
+  }
 
+  Future<void> onLoadLanguages() async {
+    emit(state.copyWith(status: MoviesStatus.loadingLanguages));
     try {
       final languages = await TMDBAPI.fetchLanguages();
       emit(state.copyWith(
         languages: languages,
-        status: MoviesStatus.complementaryDataLoaded,
+        status: MoviesStatus.languagesLoaded,
       ));
-      onFetchTopMovies(pageKey: 1);
     } catch (e) {
       emit(state.copyWith(
         status: MoviesStatus.failure,
-        failure: Failure(message: 'Complementary data could not be fetched. Reason: $e'),
+        failure: Failure(message: 'Languages data could not be fetched. Reason: $e'),
+      ));
+    }
+  }
+
+  Future<void> onLoadGenres() async {
+    emit(state.copyWith(status: MoviesStatus.loadingGenres));
+    try {
+      final genres = await TMDBAPI.fetchGenres();
+      emit(state.copyWith(
+        genres: genres,
+        status: MoviesStatus.genresLoaded,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: MoviesStatus.failure,
+        failure: Failure(message: 'Genres data could not be fetched. Reason: $e'),
       ));
     }
   }
