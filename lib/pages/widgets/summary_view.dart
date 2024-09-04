@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinit_frontend_assessment/blocs/blocs.dart';
+import 'package:infinit_frontend_assessment/pages/widgets/widgets.dart';
 import 'package:infinit_frontend_assessment/utils.dart';
 
 const pagePadding = 16.0;
@@ -38,6 +39,24 @@ class SummaryView extends StatelessWidget {
                         '${index + 1}. ${countMoviesPerYear.key} had ${countMoviesPerYear.value} top rated movies'),
                     // trailing: Text('${genre.value} of ${state.topMovies.length}'),
                   )),
+              Padding(
+                padding: const EdgeInsets.all(pagePadding),
+                child: Text(
+                  'Vote count vs Vote Average based on genre:',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              SizedBox(
+                height: 800,
+                child: Padding(
+                  padding: const EdgeInsets.all(pagePadding),
+                  child: VoteScatterPlot(
+                    moviesState: state,
+                    movies: state.topMovies,
+                    genres: state.genres,
+                  ),
+                ),
+              )
             ],
           ),
         ),
