@@ -101,7 +101,10 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: movie.original_language,
+                            text: state.languages
+                                .where((language) => movie.original_language == language.iso_639_1)
+                                .firstOrNull
+                                ?.english_name,
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
