@@ -17,11 +17,26 @@ class SummaryView extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(pagePadding),
-                child: Text('Top 3 genres:', style: Theme.of(context).textTheme.titleLarge),
+                child: Text(
+                  'Top 3 genres:',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
               ...state.top3Genres.mapIndexed((index, genre) => ListTile(
                     title: Text('${index + 1}. ${getGenreFromId(state, genre.key)}'),
                     trailing: Text('${genre.value} of ${state.topMovies.length}'),
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(pagePadding),
+                child: Text(
+                  'Best 5 years:',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              ...state.top5BestYears.mapIndexed((index, countMoviesPerYear) => ListTile(
+                    title: Text(
+                        '${index + 1}. ${countMoviesPerYear.key} had ${countMoviesPerYear.value} top rated movies'),
+                    // trailing: Text('${genre.value} of ${state.topMovies.length}'),
                   )),
             ],
           ),

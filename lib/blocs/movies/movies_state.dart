@@ -50,6 +50,26 @@ class MoviesState extends Equatable {
 
   List<MapEntry<int, int>> get top3Genres => sortedGenres.take(3).toList();
 
+  Map<int, int> get countMoviesPerYear {
+    final Map<int, int> moviesPerYear = {};
+
+    for (final movie in topMovies) {
+      final year = DateTime.parse(movie.release_date).year;
+      if (moviesPerYear.containsKey(year)) {
+        moviesPerYear[year] = moviesPerYear[year]! + 1;
+      } else {
+        moviesPerYear[year] = 1;
+      }
+    }
+
+    return moviesPerYear;
+  }
+
+  List<MapEntry<int, int>> get sortedCountMoviesPerTrend =>
+      countMoviesPerYear.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
+  List<MapEntry<int, int>> get top5BestYears => sortedCountMoviesPerTrend.take(5).toList();
+
   @override
   List<Object> get props => [
         topMovies,
