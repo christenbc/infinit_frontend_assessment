@@ -74,4 +74,22 @@ class TMDBAPI {
       throw Exception(message);
     }
   }
+
+  /// Retrieves the list of genres used throughout TMDB
+  static Future<List<Genre>> fetchGenres() async {
+    String url = '$_baseUrl/genre/movie/list';
+
+    final response = await _dio.get(url);
+
+    final dynamic rawData = response.data;
+    if (response.statusCode == 200 || response.statusCode == 304) {
+      // 200 OK or 304 Not Modified
+      final List<dynamic> data = rawData["genres"];
+      final genres = data.map((languageData) => Genre.fromJson(languageData)).toList();
+      return genres;
+    } else {
+      final dynamic message = rawData["message"];
+      throw Exception(message);
+    }
+  }
 }

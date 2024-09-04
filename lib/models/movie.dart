@@ -17,6 +17,7 @@ class Movie extends Equatable {
   final String release_date;
   final double vote_average;
   final int vote_count;
+  final List<int> genre_ids;
 
   const Movie({
     required this.id,
@@ -30,6 +31,7 @@ class Movie extends Equatable {
     required this.release_date,
     required this.vote_average,
     required this.vote_count,
+    required this.genre_ids,
   });
 
   // https://developer.themoviedb.org/docs/image-basics
@@ -56,5 +58,6 @@ class Movie extends Equatable {
         release_date,
         vote_average,
         vote_count,
+        genre_ids,
       ];
 }
