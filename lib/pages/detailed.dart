@@ -65,7 +65,7 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: movie.vote_average.toString(),
+                            text: movie.vote_average.toStringAsFixed(2),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -91,7 +91,7 @@ class DetailedPage extends StatelessWidget {
                     child: RichText(
                       textAlign: TextAlign.start,
                       text: TextSpan(
-                        text: 'Popularity: ',
+                        text: 'Popularity factor: ',
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
