@@ -26,25 +26,25 @@ class _SummaryViewState extends State<SummaryView> with AutomaticKeepAliveClient
             Padding(
               padding: const EdgeInsets.all(pagePadding),
               child: Text(
-                'Top 3 genres:',
+                'Top 5 genres:',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
-            ...state.top3Genres.mapIndexed((index, genre) => ListTile(
+            ...state.top5Genres.mapIndexed((index, genre) => ListTile(
                   title: Text('${index + 1}. ${getGenreFromId(state, genre.key)}'),
                   trailing: Text('${genre.value} of ${state.topMovies.length}'),
                 )),
             Padding(
               padding: const EdgeInsets.all(pagePadding),
               child: Text(
-                'Best 5 years:',
+                'Top 5 best years:',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             ...state.top5BestYears.mapIndexed((index, countMoviesPerYear) => ListTile(
-                  title:
-                      Text('${index + 1}. ${countMoviesPerYear.key} had ${countMoviesPerYear.value} top rated movies'),
-                  // trailing: Text('${genre.value} of ${state.topMovies.length}'),
+                  title: Text('${index + 1}. ${countMoviesPerYear.key}'),
+                  trailing: Text('${countMoviesPerYear.value} of ${state.topMovies.length}'),
+                )),
                 )),
             Padding(
               padding: const EdgeInsets.all(pagePadding),
