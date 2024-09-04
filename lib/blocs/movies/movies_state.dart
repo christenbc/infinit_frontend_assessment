@@ -50,7 +50,7 @@ class MoviesState extends Equatable {
   List<MapEntry<int, int>> get sortedGenres =>
       getGenresCount.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
 
-  List<MapEntry<int, int>> get top3Genres => sortedGenres.take(3).toList();
+  List<MapEntry<int, int>> get top5Genres => sortedGenres.take(5).toList();
 
   Map<int, int> get countMoviesPerYear {
     final Map<int, int> moviesPerYear = {};
@@ -71,6 +71,28 @@ class MoviesState extends Equatable {
       countMoviesPerYear.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
 
   List<MapEntry<int, int>> get top5BestYears => sortedCountMoviesPerTrend.take(5).toList();
+
+  Map<String, int> get getInternationalLanguagesCount {
+    final languageCount = <String, int>{};
+
+    for (final movie in topMovies) {
+      final originalLanguage = movie.original_language;
+      if (languageCount.containsKey(originalLanguage)) {
+        languageCount[originalLanguage] = languageCount[originalLanguage]! + 1;
+      } else {
+        languageCount[originalLanguage] = 1;
+      }
+    }
+
+    languageCount.remove('en');
+
+    return languageCount;
+  }
+
+  List<MapEntry<String, int>> get sortedInternationalLanguagesCount =>
+      getInternationalLanguagesCount.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
+  List<MapEntry<String, int>> get top5InternationalLanguagesCount => sortedInternationalLanguagesCount.take(5).toList();
 
   @override
   List<Object> get props => [

@@ -45,6 +45,16 @@ class _SummaryViewState extends State<SummaryView> with AutomaticKeepAliveClient
                   title: Text('${index + 1}. ${countMoviesPerYear.key}'),
                   trailing: Text('${countMoviesPerYear.value} of ${state.topMovies.length}'),
                 )),
+            Padding(
+              padding: const EdgeInsets.all(pagePadding),
+              child: Text(
+                'Top 5 international movies:',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            ...state.top5InternationalLanguagesCount.mapIndexed((index, languagesCount) => ListTile(
+                  title: Text('${index + 1}. ${getLanguageFromLanguageId(state, languagesCount.key)}'),
+                  trailing: Text('${languagesCount.value} of ${state.topMovies.length}'),
                 )),
             Padding(
               padding: const EdgeInsets.all(pagePadding),
