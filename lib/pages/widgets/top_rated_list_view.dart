@@ -9,7 +9,14 @@ class TopRatedListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocConsumer<MoviesCubit, MoviesState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state.status == MoviesStatus.failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.failure.message.toString()),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         },
         builder: (context, state) => ListView.separated(
           itemCount: state.topMovies.length,
