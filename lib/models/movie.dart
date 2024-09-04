@@ -6,32 +6,32 @@ part 'movie.g.dart';
 
 @JsonSerializable()
 class Movie extends Equatable {
-  final int id;
-  final String title;
-  final bool adult;
-  final String backdrop_path;
-  final String poster_path;
-  final String original_language;
-  final String overview;
-  final double popularity;
-  final String release_date;
-  final double vote_average;
-  final int vote_count;
-  final List<int> genre_ids;
+  final int? id;
+  final String? title;
+  final bool? adult;
+  final String? backdrop_path;
+  final String? poster_path;
+  final String? original_language;
+  final String? overview;
+  final double? popularity;
+  final String? release_date;
+  final double? vote_average;
+  final int? vote_count;
+  final List<int>? genre_ids;
 
   const Movie({
-    required this.id,
-    required this.title,
-    required this.adult,
-    required this.backdrop_path,
-    required this.poster_path,
-    required this.original_language,
-    required this.overview,
-    required this.popularity,
-    required this.release_date,
-    required this.vote_average,
-    required this.vote_count,
-    required this.genre_ids,
+    this.id,
+    this.title,
+    this.adult,
+    this.backdrop_path,
+    this.poster_path,
+    this.original_language,
+    this.overview,
+    this.popularity,
+    this.release_date,
+    this.vote_average,
+    this.vote_count,
+    this.genre_ids,
   });
 
   // https://developer.themoviedb.org/docs/image-basics

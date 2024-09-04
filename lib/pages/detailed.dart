@@ -16,7 +16,7 @@ class DetailedPage extends StatelessWidget {
           final movie = state.topMovies[movieIndex];
           return Scaffold(
             appBar: AppBar(
-              title: Text(movie.title),
+              title: Text(movie.title!),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -27,7 +27,7 @@ class DetailedPage extends StatelessWidget {
                     padding: const EdgeInsets.all(pagePadding),
                     child: Wrap(
                       spacing: pagePadding,
-                      children: movie.genre_ids
+                      children: movie.genre_ids!
                           .map((genreId) => Chip(
                                 label: Text(getGenreFromId(state, genreId)),
                               ))
@@ -36,7 +36,7 @@ class DetailedPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: getInnerElementPadding(),
-                    child: Text(movie.overview),
+                    child: Text(movie.overview!),
                   ),
                   Padding(
                     padding: getInnerElementPadding(),
@@ -65,7 +65,7 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: movie.vote_average.toStringAsFixed(2),
+                            text: movie.vote_average!.toStringAsFixed(2),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -113,7 +113,7 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: getLanguageFromLanguageId(state, movie.original_language),
+                            text: getLanguageFromLanguageId(state, movie.original_language!),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),

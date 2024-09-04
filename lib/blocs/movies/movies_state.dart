@@ -35,7 +35,7 @@ class MoviesState extends Equatable {
     final genreCount = <int, int>{};
 
     for (final movie in topMovies) {
-      for (final genreId in movie.genre_ids) {
+      for (final genreId in movie.genre_ids!) {
         if (genreCount.containsKey(genreId)) {
           genreCount[genreId] = genreCount[genreId]! + 1;
         } else {
@@ -56,7 +56,7 @@ class MoviesState extends Equatable {
     final Map<int, int> moviesPerYear = {};
 
     for (final movie in topMovies) {
-      final year = DateTime.parse(movie.release_date).year;
+      final year = DateTime.parse(movie.release_date!).year;
       if (moviesPerYear.containsKey(year)) {
         moviesPerYear[year] = moviesPerYear[year]! + 1;
       } else {
@@ -78,9 +78,9 @@ class MoviesState extends Equatable {
     for (final movie in topMovies) {
       final originalLanguage = movie.original_language;
       if (languageCount.containsKey(originalLanguage)) {
-        languageCount[originalLanguage] = languageCount[originalLanguage]! + 1;
+        languageCount[originalLanguage!] = languageCount[originalLanguage]! + 1;
       } else {
-        languageCount[originalLanguage] = 1;
+        languageCount[originalLanguage!] = 1;
       }
     }
 

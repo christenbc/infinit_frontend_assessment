@@ -24,10 +24,10 @@ class VoteScatterPlot extends StatelessWidget {
 
     for (var movie in movies) {
       final spot = ScatterSpot(
-        movie.vote_count.toDouble(),
-        movie.vote_average,
+        movie.vote_count!.toDouble(),
+        movie.vote_average!,
         dotPainter: FlDotCirclePainter(
-          color: genreColors[movie.genre_ids.first] ?? Colors.grey,
+          color: genreColors[movie.genre_ids!.first] ?? Colors.grey,
         ),
       );
       spots.add(spot);
