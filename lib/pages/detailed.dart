@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinit_frontend_assessment/blocs/blocs.dart';
-import 'package:infinit_frontend_assessment/models/movie.dart';
+import 'package:infinit_frontend_assessment/utils.dart';
 
 const pagePadding = 24.0;
 
@@ -113,7 +113,7 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: getLanguageFromLanguageCode(state, movie),
+                            text: getLanguageFromLanguageId(state, movie),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -128,13 +128,6 @@ class DetailedPage extends StatelessWidget {
           );
         },
       );
-
-  String getGenreFromId(MoviesState state, int genreId) =>
-      state.genres.where((genre) => genre.id == genreId).firstOrNull?.name ?? genreId.toString();
-
-  String getLanguageFromLanguageCode(MoviesState state, Movie movie) =>
-      state.languages.where((language) => movie.original_language == language.iso_639_1).firstOrNull?.english_name ??
-      movie.original_language;
 
   EdgeInsets getInnerElementPadding() => const EdgeInsets.fromLTRB(pagePadding, 0, pagePadding, pagePadding);
 }
