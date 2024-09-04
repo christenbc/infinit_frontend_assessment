@@ -113,7 +113,7 @@ class DetailedPage extends StatelessWidget {
                         style: const TextStyle(color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text: getLanguageFromLanguageId(state, movie),
+                            text: getLanguageFromLanguageId(state, movie.original_language),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
